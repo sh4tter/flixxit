@@ -9,11 +9,13 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-// import { useContext } from "react";
-// import { AuthContext } from "./authContext/AuthContext";
+
+import { AuthContext } from "./context/authContext/AuthContext";
+import { useContext } from "react";
 
 const App = () => {
-  const user = true;
+  const user = useContext(AuthContext);
+
   return (
     <Router>
       <Switch>
