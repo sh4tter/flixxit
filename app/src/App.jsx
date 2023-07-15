@@ -6,8 +6,8 @@ import Login from "./pages/login/Login";
 import {
   BrowserRouter as Router,
   Route,
-  Routes,
-  Navigate,
+  Switch,
+  Redirect,
 } from "react-router-dom";
 // import { useContext } from "react";
 // import { AuthContext } from "./authContext/AuthContext";
@@ -16,29 +16,28 @@ const App = () => {
   const user = true;
   return (
     <Router>
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={user ? <Home /> : <Navigate to="/register" replace />}
-        />
-        <Route
-          path="/register"
-          element={!user ? <Register /> : <Navigate to="/register" />}
-        />
-        <Route
-          path="/login"
-          element={!user ? <Login /> : <Navigate to="/register" />}
-        />
-        <Route path="/register" element={<Register />} />
+      <Switch>
+        <Route exact path="/">
+          {user ? <Home /> : <Redirect to="/register" />}
+        </Route>
+        <Route path="/register">
+          {!user ? <Register /> : <Redirect to="/" />}
+        </Route>
+        <Route path="/login">{!user ? <Login /> : <Redirect to="/" />}</Route>
         {user && (
           <>
-            <Route path="/movies" element={<Home type="movies" />} />
-            <Route path="/series" element={<Home type="series" />} />
-            <Route path="/watch" element={<Watch />} />
+            <Route path="/movies">
+              <Home type="movie" />
+            </Route>
+            <Route path="/series">
+              <Home type="series" />
+            </Route>
+            <Route path="/watch">
+              <Watch />
+            </Route>
           </>
         )}
-      </Routes>
+      </Switch>
     </Router>
   );
 };
