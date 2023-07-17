@@ -33,13 +33,13 @@ router.put("/:id", verify, async (req, res) => {
 router.delete("/:id", verify, async (req, res) => {
   if (req.user.id === req.params.id || req.user.isAdmin) {
     try {
-      await User.findByIdAndDelete(req.params.id),
-        res.status(200).json("user has been deleted..");
+      await User.findByIdAndDelete(req.params.id);
+      res.status(200).json("User has been deleted...");
     } catch (err) {
       res.status(500).json(err);
     }
   } else {
-    res.status(403).json("you can delete only your account!");
+    res.status(403).json("You can delete only your account!");
   }
 });
 
@@ -72,8 +72,9 @@ router.get("/", verify, async (req, res) => {
 //GET USER STATS
 router.get("/stats", async (req, res) => {
   const today = new Date();
+  // eslint-disable-next-line no-unused-vars
   const lastYear = today.setFullYear(today.setFullYear() - 1);
-
+  // eslint-disable-next-line no-unused-vars
   const monthsArray = [
     "January",
     "February",
