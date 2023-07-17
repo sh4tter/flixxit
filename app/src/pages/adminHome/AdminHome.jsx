@@ -1,13 +1,13 @@
 import Chart from "../../components/chart/Chart";
-import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
-import "./home.css";
+import FeaturedInfo from "../../components/featuredInfo/FeatureddInfo";
+import "./adminHome.css";
 // import { userData } from "../../dummyData";
 import WidgetSm from "../../components/widgetSm/WidgetSm";
 import WidgetLg from "../../components/widgetLg/WidgetLg";
 import axios from "axios";
 import React, { useEffect, useState, useMemo } from "react";
 
-export default function Home() {
+export default function AdminHome() {
   const MONTHS = useMemo(
     () => [
       "Jan",

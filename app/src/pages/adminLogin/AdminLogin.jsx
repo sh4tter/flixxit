@@ -6,13 +6,11 @@ import "./adminLogin.css";
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isFetching, dispatch, isLoggedin, setIsLoggedIn, user } =
-    useContext(AuthContext);
-  console.log(isLoggedin);
+  const { isFetching, dispatch } = useContext(AuthContext);
+
   const handleLogin = (e) => {
     e.preventDefault();
     login({ email, password }, dispatch);
-    setIsLoggedIn(isLoggedin);
   };
 
   return (
@@ -30,7 +28,6 @@ export default function AdminLogin() {
           className="loginInput"
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <button
           className="loginButton"
           onClick={handleLogin}
