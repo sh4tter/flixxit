@@ -3,31 +3,17 @@ import Home from "./pages/home/Home";
 import Register from "./pages/register/Register";
 import Watch from "./pages/watch/Watch";
 import Login from "./pages/login/Login";
-import Sidebar from "./components/sidebar/Sidebar";
-import Topbar from "./components/topbar/Topbar";
-import UserList from "./pages/userList/UserList";
-import User from "./pages/user/User";
-import NewUser from "./pages/newUser/NewUser";
-import MovieList from "./pages/movieList/MovieList";
-import { AuthContext } from "./authContext/AuthContext";
-import { useContext } from "react";
-import Movie from "./pages/movie/Movie";
-import NewMovie from "./pages/newMovie/NewMovie";
-import ListList from "./pages/listList/ListList";
-import List from "./components/list/List";
-import NewList from "./pages/newList/NewList";
-import AdminLogin from "./pages/adminLogin/AdminLogin";
-import AdminHome from "./pages/adminHome/AdminHome";
 import {
   BrowserRouter as Router,
-  Route,
   Switch,
+  Route,
   Redirect,
 } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./authContext/AuthContext";
 
 const App = () => {
-  const user = useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
   return (
     <Router>
       <Switch>
@@ -49,47 +35,6 @@ const App = () => {
             <Route path="/watch">
               <Watch />
             </Route>
-          </>
-        )}
-
-        {/* //condition where isAdmin users can access */}
-        {user && (
-          <>
-            <Topbar />
-            <div className="container">
-              <Sidebar />
-
-              <Route exact path="/admin">
-                <AdminLogin />
-              </Route>
-              <Route path="/users">
-                <UserList />
-              </Route>
-              <Route path="/user/:userId">
-                <User />
-              </Route>
-              <Route path="/newUser">
-                <NewUser />
-              </Route>
-              <Route path="/movies">
-                <MovieList />
-              </Route>
-              <Route path="/movie/:movieId">
-                <Movie />
-              </Route>
-              <Route path="/newMovie">
-                <NewMovie />
-              </Route>
-              <Route path="/lists">
-                <ListList />
-              </Route>
-              <Route path="/list/:listId">
-                <List />
-              </Route>
-              <Route path="/newlist">
-                <NewList />
-              </Route>
-            </div>
           </>
         )}
       </Switch>
