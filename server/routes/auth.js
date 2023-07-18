@@ -51,15 +51,17 @@ router.post("/login", async (req, res) => {
 router.post("/admin", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    !user && res.status(401).json("wrong password or username!");
+    if (!user || !user.isAdmin) {
+      return res.status(401).json("Unauthorized");
+    }
 
     const bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
     const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
 
-    originalPassword !== req.body.password &&
-      res.status(401).json("wrong password or username!");
-
-    //getting a json web token to store userid, and admin data
+    if (originalPassword !== req.body.password) {
+      return res.status(401).json("Unauthorized");
+    }
+    // Generate JWT token only for users with isAdmin set to true
     const accessToken = jwt.sign(
       { id: user._id, isAdmin: user.isAdmin },
       process.env.SECRET_KEY,

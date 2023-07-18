@@ -9,7 +9,7 @@ import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
 import NewUser from "./pages/newUser/NewUser";
 import MovieList from "./pages/movieList/MovieList";
-import { AuthContext } from "./context/authContext/AuthContext";
+import { AuthContext } from "./authContext/AuthContext";
 import { useContext } from "react";
 import Movie from "./pages/movie/Movie";
 import NewMovie from "./pages/newMovie/NewMovie";
@@ -17,6 +17,7 @@ import ListList from "./pages/listList/ListList";
 import List from "./components/list/List";
 import NewList from "./pages/newList/NewList";
 import AdminLogin from "./pages/adminLogin/AdminLogin";
+import AdminHome from "./pages/adminHome/AdminHome";
 import {
   BrowserRouter as Router,
   Route,
@@ -37,7 +38,7 @@ const App = () => {
           {!user ? <Register /> : <Redirect to="/" />}
         </Route>
         <Route path="/login">{!user ? <Login /> : <Redirect to="/" />}</Route>
-        <Route path="/adminlogin">
+        {user && (
           <>
             <Route path="/movies">
               <Home type="movie" />
@@ -49,15 +50,17 @@ const App = () => {
               <Watch />
             </Route>
           </>
-          {!user ? <AdminLogin /> : <Redirect to="/" />}
-        </Route>
+        )}
+
+        {/* //condition where isAdmin users can access */}
         {user && (
           <>
             <Topbar />
             <div className="container">
               <Sidebar />
-              <Route exact path="/">
-                <Home />
+
+              <Route exact path="/admin">
+                <AdminLogin />
               </Route>
               <Route path="/users">
                 <UserList />
