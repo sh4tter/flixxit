@@ -10,9 +10,20 @@ const cors = require("cors");
 
 //ignoring env files in git
 dotenv.config();
-app.use(cors({ credentials: true }));
-app.options("*", cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000/", "https://flixxit-app.netlify.app/"],
 
+    credentials: true,
+  })
+);
+app.options("", cors());
+
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 //connect to mongodb using mongoose using .env file
 mongoose
   .connect(process.env.MONGO_URL, {
