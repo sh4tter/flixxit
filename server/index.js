@@ -6,9 +6,13 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const movieRoute = require("./routes/movies");
 const listRoute = require("./routes/lists");
+const cors = require("cors");
 
 //ignoring env files in git
 dotenv.config();
+app.use(cors());
+app.options("*", cors({ credentials: true }));
+
 //connect to mongodb using mongoose using .env file
 mongoose
   .connect(process.env.MONGO_URL, {
