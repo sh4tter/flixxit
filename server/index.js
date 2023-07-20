@@ -10,7 +10,7 @@ const cors = require("cors");
 
 //ignoring env files in git
 dotenv.config();
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.options("*", cors());
 
 //connect to mongodb using mongoose using .env file
