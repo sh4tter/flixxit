@@ -7,11 +7,12 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ListItem({ index, item }) {
   const [isHovered, setIsHovered] = useState(false);
   const [movie, setMovie] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getMovie = async () => {
@@ -30,8 +31,14 @@ export default function ListItem({ index, item }) {
     getMovie();
   }, [item]);
 
+  const watchMovie = () => {
+    navigate("/watch", {
+      state: { movie },
+    });
+  };
+
   return (
-    <Link to={{ pathname: "/watch", movie: movie }}>
+    <div>
       <div
         className="listItem"
         style={{ left: isHovered && index * 225 - 50 + index * 2.5 }}
@@ -44,7 +51,7 @@ export default function ListItem({ index, item }) {
             <video src={movie?.trailer} autoPlay={true} loop />
             <div className="itemInfo">
               <div className="icons">
-                <PlayArrow className="icon" />
+                <PlayArrow className="icon" onClick={watchMovie} />
                 <Add className="icon" />
                 <ThumbUpAltOutlined className="icon" />
                 <ThumbDownOutlined className="icon" />
@@ -60,6 +67,6 @@ export default function ListItem({ index, item }) {
           </>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
