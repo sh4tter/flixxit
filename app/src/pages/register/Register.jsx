@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef } from "react";
 import { useState } from "react";
-import { Link, Route, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./register.scss";
 
 export default function Register() {
@@ -9,16 +9,21 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const history = useHistory();
-
   const emailRef = useRef();
   const passwordRef = useRef();
   const usernameRef = useRef();
 
   const handleSignIn = () => {
-    <Route to="/register"></Route>;
+    console.log("Sign In button clicked");
+    history.push("/login");
   };
   const handleStart = () => {
-    setEmail(emailRef.current.value);
+    const emailValue = emailRef.current.value.trim();
+    if (emailValue === "") {
+      alert("Email is required");
+    } else {
+      setEmail(emailValue);
+    }
   };
   const handleFinish = async (e) => {
     e.preventDefault();
@@ -33,16 +38,22 @@ export default function Register() {
     <div className="register">
       <div className="top">
         <div className="wrapper">
-          <img
-            className="logo"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
-            alt=""
-          />
-          <Link to="/register">
-            <button className="loginButton" onClick={handleSignIn}>
+          <div>
+            <img
+              className="logo"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
+              alt=""
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="loginButton"
+              onClick={handleSignIn}
+            >
               Sign In
             </button>
-          </Link>
+          </div>
         </div>
       </div>
       <div className="container">
@@ -53,7 +64,12 @@ export default function Register() {
         </p>
         {!email ? (
           <div className="input">
-            <input type="email" placeholder="email address" ref={emailRef} />
+            <input
+              className="formInputEmail"
+              type="email"
+              placeholder="email address"
+              ref={emailRef}
+            />
             <button className="registerButton" onClick={handleStart}>
               Get Started
             </button>

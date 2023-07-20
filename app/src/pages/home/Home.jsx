@@ -36,7 +36,7 @@ const Home = ({ type }) => {
       <Navbar />
       <Featured type={type} setGenre={setGenre} />
       {lists.map((list) => (
-        <List list={list} />
+        <List key={list.id} list={list} />
       ))}
     </div>
   );

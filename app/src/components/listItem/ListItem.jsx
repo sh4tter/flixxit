@@ -39,9 +39,9 @@ export default function ListItem({ index, item }) {
         onMouseLeave={() => setIsHovered(false)}
       >
         <img src={movie?.imgSm} alt="" />
-        {isHovered && (
+        {isHovered && movie?.trailer && (
           <>
-            <video src={movie.trailer} autoPlay={true} loop />
+            <video src={movie?.trailer} autoPlay={true} loop />
             <div className="itemInfo">
               <div className="icons">
                 <PlayArrow className="icon" />

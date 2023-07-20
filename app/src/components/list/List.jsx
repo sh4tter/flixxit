@@ -16,13 +16,36 @@ export default function List({ list }) {
   const handleClick = (direction) => {
     setIsMoved(true);
     let distance = listRef.current.getBoundingClientRect().x - 50;
+
     if (direction === "left" && slideNumber > 0) {
       setSlideNumber(slideNumber - 1);
       listRef.current.style.transform = `translateX(${230 + distance}px)`;
     }
-    if (direction === "right" && slideNumber < 10 - clickLimit) {
+
+    if (
+      direction === "right" &&
+      slideNumber < list.content.length - clickLimit
+    ) {
       setSlideNumber(slideNumber + 1);
       listRef.current.style.transform = `translateX(${-230 + distance}px)`;
+    }
+
+    // Check if reached the end or beginning of the list
+    if (direction === "left" && slideNumber === 0) {
+      // If at the beginning, loop to the end
+      setSlideNumber(list.content.length - clickLimit);
+      listRef.current.style.transform = `translateX(${
+        -230 * (list.content.length - clickLimit) + distance
+      }px)`;
+    }
+
+    if (
+      direction === "right" &&
+      slideNumber === list.content.length - clickLimit
+    ) {
+      // If at the end, loop to the beginning
+      setSlideNumber(0);
+      listRef.current.style.transform = `translateX(${230 + distance}px)`;
     }
   };
   return (
@@ -30,13 +53,12 @@ export default function List({ list }) {
       <span className="listTitle">{list.title}</span>
       <div className="wrapper">
         <ArrowBackIosOutlined
-          className="sliderArrow left"
+          className={`sliderArrow left ${!isMoved && "hide"}`}
           onClick={() => handleClick("left")}
-          style={{ display: !isMoved && "none" }}
         />
         <div className="container" ref={listRef}>
-          {list.content.map((item, i) => (
-            <ListItem index={i} item={item} />
+          {list.content.map((item) => (
+            <ListItem key={item.id} item={item} />
           ))}
         </div>
         <ArrowForwardIosOutlined
