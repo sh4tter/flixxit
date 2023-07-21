@@ -12,12 +12,11 @@ const cors = require("cors");
 dotenv.config();
 app.use(
   cors({
-    origin: ["http://localhost:3000/", "https://flixxit-app.netlify.app/"],
-
+    origin: ["https://flixxit-react-frontend.onrender.com/"],
     credentials: true,
   })
 );
-app.options("", cors());
+app.options("*", cors());
 
 app.use(
   express.urlencoded({

@@ -14,7 +14,6 @@ export default function Register() {
   const usernameRef = useRef();
 
   const handleSignIn = () => {
-    console.log("Sign In button clicked");
     navigate("/login");
   };
   const handleStart = () => {
