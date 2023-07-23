@@ -2,10 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const authRoute = require("./routes/auth");
-const userRoute = require("./routes/users");
-const movieRoute = require("./routes/movies");
-const listRoute = require("./routes/lists");
+const router = require("./routes/index.js");
 const cors = require("cors");
 const path = require("path");
 
@@ -41,11 +38,9 @@ mongoose
   });
 
 app.use(express.json());
+
 //use the auth router, to get the user
-app.use("/api/auth", authRoute);
-app.use("/api/users", userRoute);
-app.use("/api/movies", movieRoute);
-app.use("/api/lists", listRoute);
+app.use("/api", router);
 
 app.listen(8800, () => {
   console.log(`server is running`);
