@@ -2,7 +2,7 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "flixxit-backend-84t8n4tlq-blueyottle.vercel.app",
+  "proxy": "https://flixxit-backend-84t8n4tlq-blueyottle.vercel.app",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
