@@ -17,10 +17,9 @@ app.get("/", (req, res) => {
 app.use(express.json());
 
 app.use(
-  cors({
-    origin: "https://flixxit-backend-blueyottle.vercel.app",
-    credentials: true,
-  })
+  cors()
+  // origin: "*",
+  // credentials: true,
 );
 app.options("*", cors());
 
