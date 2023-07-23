@@ -12,7 +12,7 @@ const cors = require("cors");
 dotenv.config();
 app.use(
   cors({
-    origin: ["https://flixxit-react-frontend.onrender.com/"],
+    origin: "*",
     credentials: true,
   })
 );
