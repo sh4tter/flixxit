@@ -7,6 +7,7 @@ const userRoute = require("./routes/users");
 const movieRoute = require("./routes/movies");
 const listRoute = require("./routes/lists");
 const cors = require("cors");
+const path = require("path");
 
 //ignoring env files in git
 dotenv.config();
@@ -16,20 +17,17 @@ app.use(
     credentials: true,
   })
 );
-
-app.options(
-  "*",
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
-
+app.use(express.static("public"));
 app.use(
   express.urlencoded({
     extended: false,
   })
 );
+
+// Serve the React app's index.html for the root route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 //connect to mongodb using mongoose using .env file
 mongoose
   .connect(process.env.MONGO_URL, {

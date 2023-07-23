@@ -7,9 +7,10 @@
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+    { "src": "/api/auth/(.*)", "dest": "/api/auth/$1" },
+    { "src": "/api/users/(.*)", "dest": "/api/users/$1" },
+    { "src": "/api/movies/(.*)", "dest": "/api/movies/$1" },
+    { "src": "/api/lists/(.*)", "dest": "/api/lists/$1" },
+    { "src": "/(.*)", "dest": "/index.js" }
   ]
 }

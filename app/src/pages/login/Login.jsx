@@ -51,6 +51,12 @@ export default function Login() {
             bot. <b>Learn more</b>.
           </small>
         </form>
+        {/* enable captch from google with secret key */}
+        {/* <form action="?" method="POST">
+      <div class="g-recaptcha" data-sitekey="6LdZfUgnAAAAACtHI4Soi5RPMTvwUjCUG6D4SGcw"></div>
+      <br/>
+      <input type="submit" value="Submit"></input>
+    </form> */}
       </div>
     </div>
   );
