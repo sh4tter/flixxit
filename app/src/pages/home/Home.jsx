@@ -4,10 +4,21 @@ import "./home.scss";
 import List from "../../components/list/List";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../axiosInstance";
+import "../../customscroll.css";
 
 const Home = ({ type }) => {
   const [lists, setLists] = useState([]);
   const [genre, setGenre] = useState(null);
+  useEffect(() => {
+    const applyCustomScrollbarStyles = () => {
+      const root = document.documentElement;
+      root.style.setProperty("--scrollbar-width", "8px"); // Adjust the width as needed
+      root.style.setProperty("--scrollbar-thumb-color", "rgba(0, 0, 0, 0.3)"); // Adjust the color as needed
+      root.style.setProperty("--scrollbar-thumb-border-radius", "4px"); // Adjust the border radius as needed
+    };
+
+    applyCustomScrollbarStyles();
+  }, []);
 
   useEffect(() => {
     const getRandomLists = async () => {

@@ -1,0 +1,12 @@
+/* customScrollbar.css */
+/* Style the track of the scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  background-color: black; /* Background color of the scrollbar track */
+}
+
+/* Style the thumb (draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Color of the thumb */
+  border-radius: 4px; /* Border radius of the thumb */
+}
