@@ -1,15 +1,32 @@
-import { InfoOutlined, PlayArrow } from "@mui/icons-material";
+import { PlayArrow } from "@mui/icons-material";
+// import { InfoOutlined} from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import "./featured.scss";
 import { axiosInstance } from "../../axiosInstance";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function Featured({ type, setGenre }) {
+export default function Featured({ type, setGenre, item }) {
   const [content, setContent] = useState({});
   const [movie, setMovie] = useState({});
-  const [showVideo, setShowVideo] = useState(false);
-  const location = useLocation();
-  const trailer = location.movie;
+  const [randomItem, setRandomItem] = useState({}); // New state to store random item
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getMovie = async () => {
+      try {
+        const res = await axiosInstance.get("/movies/find/" + item, {
+          headers: {
+            token:
+              "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
+          },
+        });
+        setMovie(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMovie();
+  }, [item]);
 
   useEffect(() => {
     const getRandomContent = async () => {
@@ -20,34 +37,18 @@ export default function Featured({ type, setGenre }) {
               "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
           },
         });
-
-        setMovie(res.data);
         setContent(res.data[0]);
+        setRandomItem(res.data[0]); // Store random item in randomItem state
       } catch (err) {
         console.log(err);
       }
     };
     getRandomContent();
   }, [type]);
-  const navigate = useNavigate();
-
-  const showVideoAfterDelay = () => {
-    setTimeout(() => {
-      setShowVideo(true);
-
-      // Stop the video after 10 seconds
-      const stopVideoTimeout = setTimeout(() => {
-        setShowVideo(false);
-      }, 10000); // 10000 milliseconds (10 seconds)
-
-      // Clear the stopVideoTimeout when the component unmounts or if the video starts playing
-      return () => clearTimeout(stopVideoTimeout);
-    }, 3000); // 3000 milliseconds (3 seconds) delay before showing the video
-  };
 
   const watchMovie = () => {
     navigate("/watch", {
-      state: { movie },
+      state: { movie: randomItem }, // Use randomItem as the movie for navigation
     });
   };
 
@@ -79,16 +80,7 @@ export default function Featured({ type, setGenre }) {
           </select>
         </div>
       )}
-      {showVideo ? (
-        <video
-          src={trailer?.video ?? ""}
-          autoPlay
-          controls
-          className="videofeatured"
-        />
-      ) : (
-        <img src={content.img} alt="" onLoad={showVideoAfterDelay} />
-      )}
+      <img src={content.img} alt="" />
       <div className="info">
         <img src={content.imgTitle} alt="" />
         <span className="desc">{content.desc}</span>
@@ -97,10 +89,10 @@ export default function Featured({ type, setGenre }) {
             <PlayArrow />
             <span>Play</span>
           </button>
-          <button className="more">
+          {/* <button className="more">
             <InfoOutlined />
             <span>Info</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
