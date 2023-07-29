@@ -10,9 +10,10 @@ export default function Featured({ type, setGenre }) {
   const [showVideo, setShowVideo] = useState(false);
   const location = useLocation();
   const trailer = location.movie;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const getRandomContent = async () => {
+    const fetchData = async () => {
       try {
         const res = await axiosInstance.get(`/movies/random?type=${type}`, {
           headers: {
@@ -20,30 +21,31 @@ export default function Featured({ type, setGenre }) {
               "Bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
           },
         });
-
-        setMovie(res.data);
         setContent(res.data[0]);
       } catch (err) {
         console.log(err);
       }
     };
-    getRandomContent();
+    fetchData();
   }, [type]);
-  const navigate = useNavigate();
 
-  const showVideoAfterDelay = () => {
-    setTimeout(() => {
-      setShowVideo(true);
+  useEffect(() => {
+    const showVideoAfterDelay = () => {
+      setTimeout(() => {
+        setShowVideo(true);
 
-      // Stop the video after 10 seconds
-      const stopVideoTimeout = setTimeout(() => {
-        setShowVideo(false);
-      }, 10000); // 10000 milliseconds (10 seconds)
+        // Stop the video after 10 seconds
+        const stopVideoTimeout = setTimeout(() => {
+          setShowVideo(false);
+        }, 10000); // 10000 milliseconds (10 seconds)
 
-      // Clear the stopVideoTimeout when the component unmounts or if the video starts playing
-      return () => clearTimeout(stopVideoTimeout);
-    }, 3000); // 3000 milliseconds (3 seconds) delay before showing the video
-  };
+        // Clear the stopVideoTimeout when the component unmounts or if the video starts playing
+        return () => clearTimeout(stopVideoTimeout);
+      }, 5000); // 3000 milliseconds (3 seconds) delay before showing the video
+    };
+
+    showVideoAfterDelay();
+  }, []); // Empty dependency array to run the effect only once
 
   const watchMovie = () => {
     navigate("/watch", {
@@ -87,7 +89,7 @@ export default function Featured({ type, setGenre }) {
           className="videofeatured"
         />
       ) : (
-        <img src={content.img} alt="" onLoad={showVideoAfterDelay} />
+        <img src={content.img} alt="" />
       )}
       <div className="info">
         <img src={content.imgTitle} alt="" />
@@ -97,10 +99,10 @@ export default function Featured({ type, setGenre }) {
             <PlayArrow />
             <span>Play</span>
           </button>
-          <button className="more">
+          {/* <button className="more">
             <InfoOutlined />
             <span>Info</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
