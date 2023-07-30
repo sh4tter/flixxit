@@ -1,4 +1,5 @@
-import { ArrowDropDown, Notifications, Search } from "@mui/icons-material";
+import { ArrowDropDown } from "@mui/icons-material";
+// import {  Notifications, Search } from "@mui/icons-material";
 import { useContext, useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
