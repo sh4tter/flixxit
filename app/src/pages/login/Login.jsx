@@ -8,10 +8,18 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isFetching, dispatch } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    login({ email, password }, dispatch);
+    setIsLoading(true);
+    try {
+      await login({ email, password }, dispatch);
+      setIsLoading(false); // Set loading to false when login is successful
+    } catch (error) {
+      setIsLoading(false); // Set loading to false if login fails
+      // Handle error, display a message, etc.
+    }
   };
   return (
     <div className="login">
@@ -40,9 +48,9 @@ export default function Login() {
           <button
             className="loginButton"
             onClick={handleLogin}
-            disabled={isFetching}
+            disabled={isFetching || isLoading} // Disable the button when fetching or loading
           >
-            Sign In
+            {isLoading ? "Loading..." : "Sign In"}
           </button>
           <span>
             New to Flixxit?{" "}
