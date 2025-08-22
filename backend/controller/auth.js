@@ -4,6 +4,12 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   try {
+    // Check if SECRET_KEY is set
+    if (!process.env.SECRET_KEY) {
+      console.error("SECRET_KEY environment variable is not set");
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+
     console.log('Registration request received:', {
       body: req.body,
       headers: req.headers
@@ -102,6 +108,12 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
+    // Check if SECRET_KEY is set
+    if (!process.env.SECRET_KEY) {
+      console.error("SECRET_KEY environment variable is not set");
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.status(401).json({ message: "Wrong email or password!" });
@@ -132,6 +144,12 @@ const loginUser = async (req, res) => {
 
 const adminLogin = async (req, res) => {
   try {
+    // Check if SECRET_KEY is set
+    if (!process.env.SECRET_KEY) {
+      console.error("SECRET_KEY environment variable is not set");
+      return res.status(500).json({ message: "Server configuration error" });
+    }
+
     console.log('Admin login attempt:', { email: req.body.email });
     
     const user = await User.findOne({ email: req.body.email });
