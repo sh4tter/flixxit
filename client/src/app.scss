@@ -1,0 +1,68 @@
+:root {
+  --main-color: #0b0b0b;
+}
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+@mixin tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+// Loading and Error States
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  color: #e50914;
+  text-align: center;
+  padding: 20px;
+}
+
+// Form validation styles
+.error-message {
+  color: #e50914;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+// Button disabled state
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// Responsive improvements
+@media (max-width: 768px) {
+  .loading,
+  .error {
+    height: 150px;
+    font-size: 14px;
+  }
+}

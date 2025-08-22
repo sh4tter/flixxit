@@ -1,0 +1,7 @@
+CLOUDINARY_CLOUD_NAME=sunnysway
+CLOUDINARY_API_KEY=893515366837441
+CLOUDINARY_API_SECRET=teftUV4ZNrqBpJu7HwvNMWTbNd0
+MONGO_URL=mongodb+srv://sunny:dNgErLQUC8QUSohG@cluster1.tqcaupq.mongodb.net/jetflix
+SECRET_KEY=sunny
+PORT=8800
+NODE_ENV=development
