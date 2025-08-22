@@ -30,7 +30,7 @@ app.use("/api", router);
 // Serve the React app's index.html for the root route (for production)
 if (process.env.NODE_ENV === 'production') {
   app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
+    res.json({ message: "Flixxit Backend API is running" });
   });
 }
 
@@ -46,11 +46,17 @@ app.use("*", (req, res) => {
 });
 
 // Connect to MongoDB
+if (!process.env.MONGO_URL) {
+  console.error("MONGO_URL environment variable is not set");
+  process.exit(1);
+}
+
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connection Successful"))
   .catch((err) => {
     console.error("DB Connection Error:", err);
+    process.exit(1);
   });
 
 // Start server
