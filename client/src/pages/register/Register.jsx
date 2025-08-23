@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import "./register.scss";
 import { register } from "../../authContext/apiCalls";
@@ -16,6 +16,14 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Pre-fill email if coming from landing page
+  useEffect(() => {
+    if (location.state?.email) {
+      setFormData(prev => ({ ...prev, email: location.state.email }));
+    }
+  }, [location.state]);
 
   const handleInputChange = (field, value) => {
     // Clear errors when user starts typing

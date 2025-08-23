@@ -61,6 +61,13 @@ const getMovieById = async (req, res) => {
     if (!movie) {
       return res.status(404).json({ message: "Movie not found" });
     }
+    
+    // Increment view count when movie is accessed
+    await Movie.findByIdAndUpdate(req.params.id, {
+      $inc: { views: 1 },
+      $set: { lastViewed: new Date() }
+    });
+    
     res.status(200).json(movie);
   } catch (err) {
     console.error("Get movie error:", err);
@@ -109,6 +116,20 @@ const getAllMovies = async (req, res) => {
   }
 };
 
+const getTrendingMovies = async (req, res) => {
+  try {
+    const trendingMovies = await Movie.find()
+      .sort({ views: -1, lastViewed: -1 })
+      .limit(10)
+      .select('title img imgSm views');
+    
+    res.status(200).json(trendingMovies);
+  } catch (err) {
+    console.error("Get trending movies error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createMovie,
   updateMovie,
@@ -116,4 +137,5 @@ module.exports = {
   getMovieById,
   getRandomMovies,
   getAllMovies,
+  getTrendingMovies,
 };

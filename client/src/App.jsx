@@ -3,6 +3,7 @@ import Home from "./pages/home/Home";
 import Register from "./pages/register/Register";
 import Watch from "./pages/watch/Watch";
 import Login from "./pages/login/Login";
+import Landing from "./pages/landing/Landing";
 
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useContext } from "react";
@@ -16,7 +17,7 @@ const App = () => {
       <Route
         path="/"
         element={
-          user ? <Home /> : <Navigate to="/register" />
+          user ? <Home /> : <Landing />
         }
       />
       <Route

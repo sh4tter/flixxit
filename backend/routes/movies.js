@@ -6,6 +6,7 @@ const {
   getMovieById,
   getRandomMovies,
   getAllMovies,
+  getTrendingMovies,
 } = require("../controller/movies");
 const verify = require("../verifyToken");
 
@@ -16,6 +17,9 @@ router.route("/").get(getAllMovies).post(createMovie);
 
 //GET RANDOM - must come before /:id to avoid conflicts
 router.get("/random", getRandomMovies);
+
+//GET TRENDING - must come before /:id to avoid conflicts
+router.get("/trending", getTrendingMovies);
 
 //GET specific movie
 router.get("/find/:id", getMovieById);

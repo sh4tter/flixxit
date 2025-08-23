@@ -1,0 +1,206 @@
+.trending-section {
+  padding: 70px 60px;
+  border-bottom: 8px solid #222;
+  background: #000;
+  
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 40px;
+    text-align: center;
+    color: white;
+  }
+}
+
+.trending-loading,
+.trending-error {
+  text-align: center;
+  color: white;
+  padding: 40px;
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #e50914;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.trending-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #e50914;
+    border-radius: 4px;
+    
+    &:hover {
+      background: #f40612;
+    }
+  }
+}
+
+.trending-item {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    
+    .movie-info {
+      opacity: 1;
+    }
+  }
+}
+
+.trending-number {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #e50914;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.movie-card {
+  position: relative;
+  width: 200px;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+.movie-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    transparent 100%
+  );
+  color: white;
+  padding: 20px 15px 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .views {
+    font-size: 0.85rem;
+    margin: 0;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    
+    &::before {
+      content: '👁️';
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .trending-section {
+    padding: 40px 20px;
+    
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+  }
+  
+  .trending-carousel {
+    gap: 15px;
+  }
+  
+  .movie-card {
+    width: 150px;
+    height: 225px;
+  }
+  
+  .trending-number {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    top: -8px;
+    left: -8px;
+  }
+  
+  .movie-info {
+    padding: 15px 10px 10px;
+    
+    h3 {
+      font-size: 0.9rem;
+    }
+    
+    .views {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
