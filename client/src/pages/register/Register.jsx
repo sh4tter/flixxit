@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import "./register.scss";
 import { register } from "../../authContext/apiCalls";
 
@@ -99,6 +100,10 @@ export default function Register() {
         setErrors({ general: errorMessage });
       } else if (err.response?.status === 500) {
         setErrors({ general: "Server error. Please try again later." });
+      } else if (err.code === 'NETWORK_ERROR' || err.code === 'ECONNABORTED') {
+        setErrors({ general: "Server is starting up. Please wait a moment and try again." });
+      } else if (err.message && err.message.includes('timeout')) {
+        setErrors({ general: "Server is taking longer than usual to respond. Please try again." });
       } else {
         setErrors({ general: "Registration failed. Please check your connection and try again." });
       }
@@ -116,6 +121,11 @@ export default function Register() {
     const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
     return passwordRegex.test(password);
   };
+
+  // Show loading spinner during cold start
+  if (isLoading && !errors.general) {
+    return <LoadingSpinner message="Creating your account..." />;
+  }
 
   return (
     <div className="register">

@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { login } from "../../authContext/apiCalls";
 import { AuthContext } from "../../authContext/AuthContext";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -69,12 +70,19 @@ export default function Login() {
       } else if (err.response?.status === 500) {
         setError("Server error. Please try again later.");
       } else if (err.code === 'NETWORK_ERROR' || err.code === 'ECONNABORTED') {
-        setError("Connection failed. Please check your internet connection.");
+        setError("Server is starting up. Please wait a moment and try again.");
+      } else if (err.message && err.message.includes('timeout')) {
+        setError("Server is taking longer than usual to respond. Please try again.");
       } else {
         setError("Login failed. Please try again.");
       }
     }
   };
+
+  // Show loading spinner during cold start
+  if (isLoading && !error) {
+    return <LoadingSpinner message="Connecting to server..." />;
+  }
 
   return (
     <div className="login">

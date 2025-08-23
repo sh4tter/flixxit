@@ -1,10 +1,14 @@
 import { loginFailure, loginStart, loginSuccess } from "./AuthActions";
-import { axiosInstance } from "../axiosInstance";
+import { axiosInstance, axiosWithRetry } from "../axiosInstance";
 
 export const login = async (user, dispatch) => {
   dispatch(loginStart());
   try {
-    const res = await axiosInstance.post("auth/login", user);
+    const res = await axiosWithRetry({
+      method: 'post',
+      url: 'auth/login',
+      data: user
+    });
     dispatch(loginSuccess(res.data));
   } catch (err) {
     console.error("Login API error:", err.response?.data || err.message);
@@ -27,7 +31,11 @@ export const login = async (user, dispatch) => {
 
 export const register = async (userData) => {
   try {
-    const res = await axiosInstance.post("auth/register", userData);
+    const res = await axiosWithRetry({
+      method: 'post',
+      url: 'auth/register',
+      data: userData
+    });
     return res.data;
   } catch (err) {
     console.error("Registration API error:", err.response?.data || err.message);
