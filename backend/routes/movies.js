@@ -7,6 +7,7 @@ const {
   getRandomMovies,
   getAllMovies,
   getTrendingMovies,
+  incrementMovieViews,
 } = require("../controller/movies");
 const verify = require("../verifyToken");
 
@@ -20,6 +21,9 @@ router.get("/random", getRandomMovies);
 
 //GET TRENDING - must come before /:id to avoid conflicts
 router.get("/trending", getTrendingMovies);
+
+//INCREMENT MOVIE VIEWS (for testing)
+router.post("/increment-views", incrementMovieViews);
 
 //GET specific movie
 router.get("/find/:id", getMovieById);

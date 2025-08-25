@@ -2,7 +2,16 @@ import AuthReducer from "./AuthReducer";
 import { createContext, useEffect, useReducer } from "react";
 
 const INITIAL_STATE = {
-  user: JSON.parse(localStorage.getItem("user")) || null, //if there is user fetch the user or set user as null
+  user: (() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Error parsing user from localStorage:", error);
+      localStorage.removeItem("user"); // Clear corrupted data
+      return null;
+    }
+  })(),
   isFetching: false,
   error: false,
 };

@@ -118,14 +118,65 @@ const getAllMovies = async (req, res) => {
 
 const getTrendingMovies = async (req, res) => {
   try {
-    const trendingMovies = await Movie.find()
+    // Get top 10 movies by views, then by recent activity
+    let trendingMovies = await Movie.find()
       .sort({ views: -1, lastViewed: -1 })
-      .limit(10)
-      .select('title img imgSm views');
+      .limit(10);
+    
+    // If we don't have enough movies with views, include some random ones
+    if (trendingMovies.length < 10) {
+      const remainingCount = 10 - trendingMovies.length;
+      const randomMovies = await Movie.find({
+        _id: { $nin: trendingMovies.map(m => m._id) }
+      })
+        .sort({ createdAt: -1 }) // Sort by creation date for newer movies
+        .limit(remainingCount);
+      
+      trendingMovies.push(...randomMovies);
+    }
+    
+    // If still no movies, get any available movies
+    if (trendingMovies.length === 0) {
+      trendingMovies = await Movie.find()
+        .sort({ createdAt: -1 })
+        .limit(10);
+    }
     
     res.status(200).json(trendingMovies);
   } catch (err) {
     console.error("Get trending movies error:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Function to manually increment movie views (for testing)
+const incrementMovieViews = async (req, res) => {
+  try {
+    const { movieId, incrementBy = 1 } = req.body;
+    
+    if (!movieId) {
+      return res.status(400).json({ message: "Movie ID is required" });
+    }
+    
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      movieId,
+      {
+        $inc: { views: incrementBy },
+        $set: { lastViewed: new Date() }
+      },
+      { new: true }
+    );
+    
+    if (!updatedMovie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+    
+    res.status(200).json({
+      message: `Views incremented by ${incrementBy}`,
+      movie: updatedMovie
+    });
+  } catch (err) {
+    console.error("Increment movie views error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -138,4 +189,5 @@ module.exports = {
   getRandomMovies,
   getAllMovies,
   getTrendingMovies,
+  incrementMovieViews,
 };

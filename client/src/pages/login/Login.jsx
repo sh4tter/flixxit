@@ -27,17 +27,8 @@ export default function Login() {
     }
   };
 
-  // Redirect to home page when user is authenticated
-  useEffect(() => {
-    if (user) {
-      // Add a small delay to prevent quick redirects and show success state
-      const timer = setTimeout(() => {
-        navigate("/");
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [user, navigate]);
+  // Note: Removed automatic redirect - let routing handle it
+  // The App.jsx routing will automatically redirect authenticated users away from login
 
   // Handle auth errors from context
   useEffect(() => {

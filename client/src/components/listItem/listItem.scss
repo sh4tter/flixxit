@@ -1,76 +1,51 @@
+.listItem-wrapper {
+  width: 280px;
+  height: 160px;
+  margin-right: 8px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  
+  &:hover {
+    z-index: 999999;
+  }
+}
+
 .listItem {
-  width: 225px;
-  height: 120px;
+  width: 280px;
+  height: 160px;
   background-color: var(--main-color);
-  margin-right: 5px;
   overflow: hidden;
   cursor: pointer;
   color: white;
   border-radius: 4px;
   position: relative;
-  transition: transform 0.2s ease-out;
+  transition: all 0.3s ease;
   transform: scale(1);
-  
-  // Placeholder styling for when image is loading
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, #2c2c2c, #3c3c3c);
-    z-index: -1;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 4px;
-    transition: transform 0.2s ease-out;
-  }
-
-  video {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: 4px 4px 0 0;
-    transition: transform 0.2s ease-out;
-  }
+  flex-shrink: 0; // Prevent shrinking
 
   // Loading state
   &.loading {
-    background: linear-gradient(90deg, #2c2c2c 25%, #3c3c3c 50%, #2c2c2c 75%);
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
-    
-    &::before {
-      display: none;
-    }
     
     .loading-placeholder {
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, #2c2c2c 25%, #3c3c3c 50%, #2c2c2c 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.1);
     }
   }
-  
+
   // Error state
   .error-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    color: #ff6b6b;
-    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     
     span {
       font-size: 24px;
@@ -84,6 +59,46 @@
     }
   }
 
+  // Placeholder for missing images
+  .placeholder-image {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    
+    .placeholder-text {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      padding: 20px;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: block; // Ensure proper display
+  }
+
+  video {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 4px 4px 0 0;
+    transition: all 0.3s ease;
+    z-index: 2; // Ensure video appears above background image
+  }
+
   // Netflix-style hover effect
   &:hover {
     transform: scale(1.05);
@@ -94,89 +109,48 @@
     }
   }
 
-  // Expanded state (Netflix-style)
-  &.expanded {
-    width: 325px;
-    height: 300px;
-    position: absolute;
-    top: -150px;
-    z-index: 999;
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
 
-    img {
-      height: 140px;
-      border-radius: 4px 4px 0 0;
-    }
+}
 
-    video {
-      border-radius: 4px 4px 0 0;
-    }
-
-    .itemInfo {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95));
-      border-radius: 0 0 4px 4px;
-      opacity: 0;
-      animation: fadeIn 0.2s ease-out forwards;
-
-      .icons {
-        display: flex;
-        margin-bottom: 10px;
-        gap: 8px;
-
-        .icon {
-          border: 2px solid rgba(255, 255, 255, 0.7);
-          padding: 6px;
-          border-radius: 50%;
-          font-size: 16px;
-          background: rgba(0, 0, 0, 0.6);
-          transition: all 0.15s ease-out;
-          cursor: pointer;
-
-          &:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: white;
-            transform: scale(1.05);
-          }
-        }
+// Responsive adjustments for zoomed state
+@media (max-width: 768px) {
+  .listItem.zoomed {
+    width: 90vw !important;
+    max-width: 400px !important;
+    height: 450px !important;
+    
+    .zoomed-content {
+      .video-section {
+        height: 270px; // 60% of 450px
       }
       
-      .itemInfoTop {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        font-size: 12px;
-        font-weight: 500;
-        color: #b3b3b3;
-        gap: 8px;
-
-        .limit {
-          border: 1px solid #b3b3b3;
-          padding: 1px 4px;
-          border-radius: 2px;
-          font-size: 10px;
+      .interactive-section {
+        height: 180px; // 40% of 450px
+        padding: 16px;
+        
+        .action-buttons {
+          gap: 8px;
+          
+          .action-btn {
+            width: 40px;
+            height: 40px;
+            
+            svg {
+              font-size: 18px;
+            }
+          }
         }
-      }
-
-      .desc {
-        font-size: 12px;
-        margin-bottom: 8px;
-        line-height: 1.3;
-        color: #e5e5e5;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .genre {
-        font-size: 12px;
-        color: #b3b3b3;
-        font-weight: 400;
+        
+        .movie-info {
+          .movie-meta {
+            font-size: 13px;
+            gap: 8px;
+          }
+          
+          .description {
+            font-size: 13px;
+          }
+        }
       }
     }
   }
@@ -186,9 +160,11 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 

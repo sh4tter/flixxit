@@ -1,0 +1,246 @@
+.drag-drop-upload {
+  margin-bottom: 24px;
+
+  .upload-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #e0e0e0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .upload-description {
+    margin: 0 0 12px 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .upload-area {
+    position: relative;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 32px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    &:hover {
+      border-color: #4ecdc4;
+      background: rgba(78, 205, 196, 0.05);
+      transform: translateY(-2px);
+    }
+
+    &.drag-over {
+      border-color: #4ecdc4;
+      background: rgba(78, 205, 196, 0.1);
+      transform: scale(1.02);
+    }
+
+    &.has-file {
+      border-style: solid;
+      border-color: #4ecdc4;
+      background: rgba(78, 205, 196, 0.05);
+    }
+  }
+
+  .upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+
+    .upload-icon {
+      font-size: 48px !important;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .upload-text {
+      h4 {
+        margin: 0 0 8px 0;
+        color: #e0e0e0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 12px 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+      }
+
+      .file-types {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+  .file-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .preview-image {
+      max-width: 100%;
+      max-height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .video-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.8);
+
+      .video-icon {
+        font-size: 32px !important;
+        color: #4ecdc4;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+
+    .file-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      border-radius: 10px;
+
+      .overlay-icon {
+        font-size: 24px !important;
+        color: #4ecdc4;
+        margin-bottom: 8px;
+      }
+
+      span {
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+      }
+    }
+
+    &:hover .file-overlay {
+      opacity: 1;
+    }
+  }
+
+  .upload-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #4ecdc4;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    span {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .drag-drop-upload {
+    .upload-area {
+      padding: 24px 16px;
+      min-height: 120px;
+    }
+
+    .upload-content {
+      gap: 12px;
+
+      .upload-icon {
+        font-size: 36px !important;
+      }
+
+      .upload-text {
+        h4 {
+          font-size: 16px;
+        }
+
+        p {
+          font-size: 13px;
+        }
+
+        .file-types {
+          font-size: 10px;
+          padding: 4px 8px;
+        }
+      }
+    }
+
+    .file-preview {
+      .preview-image {
+        max-height: 80px;
+      }
+
+      .video-preview {
+        .video-icon {
+          font-size: 24px !important;
+        }
+
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

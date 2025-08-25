@@ -1,73 +1,96 @@
 /* eslint-disable no-unused-vars */
 import {
-  ArrowBackIosOutlined,
   ArrowForwardIosOutlined,
 } from "@mui/icons-material";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ListItem from "../listItem/ListItem";
 import "./list.scss";
 
 export default function List({ list, isTop10 = false }) {
-  const [isMoved, setIsMoved] = useState(false);
-  const [slideNumber, setSlideNumber] = useState(0);
-  const [clickLimit, setClickLimit] = useState(window.innerWidth / 230);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const listRef = useRef();
+  const containerRef = useRef();
 
-  const handleClick = (direction) => {
-    setIsMoved(true);
-    let distance = listRef.current.getBoundingClientRect().x - 50;
-
-    if (direction === "left" && slideNumber > 0) {
-      setSlideNumber(slideNumber - 1);
-      listRef.current.style.transform = `translateX(${230 + distance}px)`;
-    }
-
-    if (
-      direction === "right" &&
-      slideNumber < list.content.length - clickLimit
-    ) {
-      setSlideNumber(slideNumber + 1);
-      listRef.current.style.transform = `translateX(${-230 + distance}px)`;
-    }
-
-    // Check if reached the end or beginning of the list
-    if (direction === "left" && slideNumber === 0) {
-      // If at the beginning, loop to the end
-      setSlideNumber(list.content.length - clickLimit);
-      listRef.current.style.transform = `translateX(${
-        -230 * (list.content.length - clickLimit) + distance
-      }px)`;
-    }
-
-    if (
-      direction === "right" &&
-      slideNumber === list.content.length - clickLimit
-    ) {
-      // If at the end, loop to the beginning
-      setSlideNumber(0);
-      listRef.current.style.transform = `translateX(${230 + distance}px)`;
+  const handleScrollRight = () => {
+    if (!listRef.current || list.content.length === 0) return;
+    
+    const itemWidth = 288; // 280px item + 8px gap
+    const newIndex = currentIndex + 1;
+    
+    setCurrentIndex(newIndex);
+    listRef.current.style.transform = `translateX(-${newIndex * itemWidth}px)`;
+    
+    // When we reach the end of the original list, seamlessly reset to beginning
+    if (newIndex >= list.content.length) {
+      // Wait for the animation to complete, then reset seamlessly
+      setTimeout(() => {
+        setCurrentIndex(0);
+        listRef.current.style.transition = 'none';
+        listRef.current.style.transform = 'translateX(0px)';
+        
+        // Force a reflow
+        listRef.current.offsetHeight;
+        
+        // Restore smooth scrolling
+        listRef.current.style.transition = 'transform 0.3s ease';
+      }, 300); // Match the CSS transition duration
     }
   };
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    
+    if (isLeftSwipe) {
+      handleScrollRight();
+    }
+  };
+
+  // Create duplicated content for seamless circular loop
+  // We duplicate the content multiple times to ensure smooth infinite scrolling
+  const duplicatedContent = [...list.content, ...list.content, ...list.content, ...list.content];
+
+  // Check if this is a horror movies list
+  const isHorrorList = list.title.toLowerCase().includes('horror');
+
   return (
-    <div className={`list ${isTop10 ? 'top10-list' : ''}`}>
+    <div className={`list ${isTop10 ? 'top10-list' : ''} ${isHorrorList ? 'horror-list' : ''}`}>
       <span className="listTitle">
-        {isTop10 && <span className="top10-icon">🔥</span>}
         {list.title}
       </span>
-      <div className="wrapper">
-        <ArrowBackIosOutlined
-          className={`sliderArrow left ${!isMoved && "hide"}`}
-          onClick={() => handleClick("left")}
-        />
+      <div className="wrapper" 
+           ref={containerRef}
+           onTouchStart={handleTouchStart}
+           onTouchMove={handleTouchMove}
+           onTouchEnd={handleTouchEnd}>
         <div className="container" ref={listRef}>
-          {list.content.map((item, index) => (
-            <ListItem key={`${item}-${index}`} index={index} item={item} />
+          {duplicatedContent.map((item, index) => (
+            <ListItem 
+              key={`${item}-${index}`} 
+              index={index} 
+              item={item} 
+              isHorrorList={isHorrorList}
+            />
           ))}
         </div>
         <ArrowForwardIosOutlined
           className="sliderArrow right"
-          onClick={() => handleClick("right")}
+          onClick={handleScrollRight}
         />
       </div>
     </div>

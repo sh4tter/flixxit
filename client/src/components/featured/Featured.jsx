@@ -92,7 +92,17 @@ export default function Featured({ type, setGenre, item }) {
     e.target.src = canvas.toDataURL();
   };
 
-  const watchMovie = () => {
+  const watchMovie = async () => {
+    try {
+      // Increment movie views when clicked
+      await axiosInstance.post('/movies/increment-views', {
+        movieId: randomItem._id,
+        incrementBy: 1
+      });
+    } catch (err) {
+      console.error('Error incrementing movie views:', err);
+    }
+    
     navigate("/watch", {
       state: { movie: randomItem }, // Use randomItem as the movie for navigation
     });

@@ -57,6 +57,20 @@ export const adminApiCalls = {
     }
   },
 
+  updateList: async (id, listData) => {
+    try {
+      console.log("Making PUT request to:", `lists/${id}`);
+      console.log("Request data:", listData);
+      const response = await axiosInstance.put(`lists/${id}`, listData);
+      console.log("Response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Update list API error:", error);
+      console.error("Error response:", error.response?.data);
+      throw error;
+    }
+  },
+
   deleteList: async (id) => {
     try {
       const response = await axiosInstance.delete(`lists/${id}`);

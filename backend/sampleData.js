@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Movie = require("./models/Movie");
+const List = require("./models/List");
 require("dotenv").config();
 
 // Sample movies data with view counts
@@ -7,9 +8,9 @@ const sampleMovies = [
   {
     title: "Wednesday",
     desc: "A supernatural mystery series following Wednesday Addams as she navigates her new school.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Wednesday",
+    img: null,
     imgTitle: "Wednesday",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Wednesday",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=Di310WS8zLk",
     video: "https://www.youtube.com/watch?v=Di310WS8zLk",
     year: "2022",
@@ -22,9 +23,9 @@ const sampleMovies = [
   {
     title: "Great Indian Family",
     desc: "A heartwarming family drama about cultural identity and acceptance.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Great+Indian+Family",
+    img: null,
     imgTitle: "Great Indian Family",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Great+Indian+Family",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example1",
     video: "https://www.youtube.com/watch?v=example1",
     year: "2023",
@@ -37,9 +38,9 @@ const sampleMovies = [
   {
     title: "Raid 2",
     desc: "An action-packed sequel following the intense police operations.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Raid+2",
+    img: null,
     imgTitle: "Raid 2",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Raid+2",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example2",
     video: "https://www.youtube.com/watch?v=example2",
     year: "2021",
@@ -52,9 +53,9 @@ const sampleMovies = [
   {
     title: "Maareesan",
     desc: "A romantic comedy about love and relationships in modern times.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Maareesan",
+    img: null,
     imgTitle: "Maareesan",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Maareesan",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example3",
     video: "https://www.youtube.com/watch?v=example3",
     year: "2023",
@@ -67,9 +68,9 @@ const sampleMovies = [
   {
     title: "Squid Game",
     desc: "A thrilling survival drama where contestants play deadly games for money.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Squid+Game",
+    img: null,
     imgTitle: "Squid Game",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Squid+Game",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example4",
     video: "https://www.youtube.com/watch?v=example4",
     year: "2021",
@@ -82,9 +83,9 @@ const sampleMovies = [
   {
     title: "Saas Bahu Saga",
     desc: "A family drama exploring the complex relationships between mothers-in-law and daughters-in-law.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Saas+Bahu+Saga",
+    img: null,
     imgTitle: "Saas Bahu Saga",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Saas+Bahu+Saga",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example5",
     video: "https://www.youtube.com/watch?v=example5",
     year: "2022",
@@ -97,9 +98,9 @@ const sampleMovies = [
   {
     title: "The Last Kingdom",
     desc: "A historical drama set in medieval England during the Viking invasions.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=The+Last+Kingdom",
+    img: null,
     imgTitle: "The Last Kingdom",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=The+Last+Kingdom",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example6",
     video: "https://www.youtube.com/watch?v=example6",
     year: "2020",
@@ -112,9 +113,9 @@ const sampleMovies = [
   {
     title: "Money Heist",
     desc: "A group of robbers attempt to pull off the biggest heist in Spanish history.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Money+Heist",
+    img: null,
     imgTitle: "Money Heist",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Money+Heist",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example7",
     video: "https://www.youtube.com/watch?v=example7",
     year: "2017",
@@ -127,9 +128,9 @@ const sampleMovies = [
   {
     title: "Stranger Things",
     desc: "When a young boy disappears, his mother must confront terrifying forces to get him back.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Stranger+Things",
+    img: null,
     imgTitle: "Stranger Things",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Stranger+Things",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example8",
     video: "https://www.youtube.com/watch?v=example8",
     year: "2016",
@@ -142,9 +143,9 @@ const sampleMovies = [
   {
     title: "Breaking Bad",
     desc: "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student.",
-    img: "https://via.placeholder.com/400x600/000000/FFFFFF?text=Breaking+Bad",
+    img: null,
     imgTitle: "Breaking Bad",
-    imgSm: "https://via.placeholder.com/200x300/000000/FFFFFF?text=Breaking+Bad",
+    imgSm: null,
     trailer: "https://www.youtube.com/watch?v=example9",
     video: "https://www.youtube.com/watch?v=example9",
     year: "2008",
@@ -169,6 +170,42 @@ const populateSampleData = async () => {
     // Insert sample movies
     const insertedMovies = await Movie.insertMany(sampleMovies);
     console.log(`Successfully inserted ${insertedMovies.length} movies`);
+
+    // Create sample lists with movie content
+    const sampleLists = [
+      {
+        title: "Trending Now",
+        type: "trending",
+        genre: "Mixed",
+        content: insertedMovies.slice(0, 5).map(movie => movie._id), // First 5 movies
+        isTop10: false,
+        order: 1
+      },
+      {
+        title: "Top 10 Movies",
+        type: "top10",
+        genre: "Mixed",
+        content: insertedMovies.slice(0, 10).map(movie => movie._id), // First 10 movies
+        isTop10: true,
+        order: 0
+      },
+      {
+        title: "Action & Adventure",
+        type: "action",
+        genre: "Action",
+        content: insertedMovies.filter(movie => movie.genre.toLowerCase().includes('action')).slice(0, 3).map(movie => movie._id),
+        isTop10: false,
+        order: 2
+      }
+    ];
+
+    // Clear existing lists
+    await List.deleteMany({});
+    console.log("Cleared existing lists");
+
+    // Insert sample lists
+    const insertedLists = await List.insertMany(sampleLists);
+    console.log(`Successfully inserted ${insertedLists.length} lists`);
 
     // Display the trending movies
     const trendingMovies = await Movie.find()
