@@ -221,6 +221,10 @@ const TrendingMovies = () => {
                       <img 
                         src={movie.imgSm || movie.img} 
                         alt={movie.title}
+                        style={{ 
+                          display: isHovered && movie.trailer ? 'none' : 'block',
+                          zIndex: 1 
+                        }}
                         onError={(e) => {
                           e.target.style.display = 'none';
                           e.target.nextSibling.style.display = 'flex';
@@ -232,59 +236,45 @@ const TrendingMovies = () => {
                     </div>
                   </div>
                   
-                  {/* Hover overlay */}
-                  {isHovered && (
-                    <div className="hover-overlay">
-                      {movie.trailer && (
-                        <video 
-                          src={movie.trailer} 
-                          autoPlay 
-                          loop 
-                          muted 
-                          playsInline 
-                          style={{ 
-                            width: '100%', 
-                            height: '100%', 
-                            objectFit: 'cover',
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            zIndex: 2
-                          }}
-                        />
-                      )}
-                      
-                      {/* Hover info overlay */}
-                      <div className="hover-info" style={{
+                  {/* Video overlay on hover - same as normal list items */}
+                  {isHovered && movie.trailer && (
+                    <video 
+                      src={movie.trailer} 
+                      autoPlay 
+                      loop 
+                      muted 
+                      playsInline 
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'cover',
                         position: 'absolute',
-                        bottom: 0,
+                        top: 0,
                         left: 0,
-                        right: 0,
-                        background: 'linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.9))',
-                        padding: '20px',
-                        zIndex: 3
-                      }}>
-                        <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                          <button 
-                            onClick={() => handleMovieClick(movie._id)}
-                            style={{
-                              border: 'none',
-                              background: 'rgba(255, 255, 255, 0.1)',
-                              borderRadius: '50%',
-                              width: '32px',
-                              height: '32px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                              color: 'white'
-                            }}
-                          >
-                            <PlayArrow style={{ fontSize: '16px' }} />
-                          </button>
-                          <button style={{
-                            border: 'none',
-                            background: 'rgba(255, 255, 255, 0.1)',
+                        zIndex: 2
+                      }}
+                    />
+                  )}
+                  
+                  {/* Hover overlay - same as normal list items */}
+                  {isHovered && (
+                    <div className="itemInfo" style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      background: 'linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.9))',
+                      padding: '10px',
+                      zIndex: 3,
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}>
+                      <div className="icons" style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                        <button 
+                          onClick={() => handleMovieClick(movie._id)}
+                          style={{
+                            border: '2px solid rgba(255, 255, 255, 0.7)',
+                            background: 'rgba(0, 0, 0, 0.6)',
                             borderRadius: '50%',
                             width: '32px',
                             height: '32px',
@@ -292,48 +282,68 @@ const TrendingMovies = () => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             cursor: 'pointer',
-                            color: 'white'
-                          }}>
-                            <Add style={{ fontSize: '16px' }} />
-                          </button>
-                          <button style={{
-                            border: 'none',
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            borderRadius: '50%',
-                            width: '32px',
-                            height: '32px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            color: 'white'
-                          }}>
-                            <ThumbUpAltOutlined style={{ fontSize: '16px' }} />
-                          </button>
-                          <button style={{
-                            border: 'none',
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            borderRadius: '50%',
-                            width: '32px',
-                            height: '32px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            color: 'white'
-                          }}>
-                            <ThumbDownOutlined style={{ fontSize: '16px' }} />
-                          </button>
-                        </div>
-                        <div style={{ color: 'white', fontSize: '12px' }}>
-                          <span style={{ color: '#46d369', marginRight: '8px' }}>{movie.duration}</span>
-                          <span style={{ border: '1px solid #b3b3b3', padding: '1px 4px', marginRight: '8px' }}>+{movie.limit}</span>
-                          <span style={{ marginRight: '8px' }}>{movie.year}</span>
-                          <span>{movie.genre}</span>
-                        </div>
-                        <div style={{ color: '#e5e5e5', fontSize: '12px', marginTop: '4px', lineHeight: 1.3 }}>
-                          {movie.desc}
-                        </div>
+                            color: 'white',
+                            transition: 'all 0.15s ease-out'
+                          }}
+                        >
+                          <PlayArrow style={{ fontSize: '16px' }} />
+                        </button>
+                        <button style={{
+                          border: '2px solid rgba(255, 255, 255, 0.7)',
+                          background: 'rgba(0, 0, 0, 0.6)',
+                          borderRadius: '50%',
+                          width: '32px',
+                          height: '32px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          color: 'white',
+                          transition: 'all 0.15s ease-out'
+                        }}>
+                          <Add style={{ fontSize: '16px' }} />
+                        </button>
+                        <button style={{
+                          border: '2px solid rgba(255, 255, 255, 0.7)',
+                          background: 'rgba(0, 0, 0, 0.6)',
+                          borderRadius: '50%',
+                          width: '32px',
+                          height: '32px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          color: 'white',
+                          transition: 'all 0.15s ease-out'
+                        }}>
+                          <ThumbUpAltOutlined style={{ fontSize: '16px' }} />
+                        </button>
+                        <button style={{
+                          border: '2px solid rgba(255, 255, 255, 0.7)',
+                          background: 'rgba(0, 0, 0, 0.6)',
+                          borderRadius: '50%',
+                          width: '32px',
+                          height: '32px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          color: 'white',
+                          transition: 'all 0.15s ease-out'
+                        }}>
+                          <ThumbDownOutlined style={{ fontSize: '16px' }} />
+                        </button>
+                      </div>
+                      <div className="itemInfoTop" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', fontSize: '12px', color: '#b3b3b3' }}>
+                        <span>{movie.duration}</span>
+                        <span className="limit" style={{ border: '1px solid #b3b3b3', padding: '1px 4px', borderRadius: '2px', fontSize: '10px' }}>+{movie.limit}</span>
+                        <span>{movie.year}</span>
+                      </div>
+                      <div className="desc" style={{ fontSize: '12px', color: '#e5e5e5', lineHeight: 1.3, marginBottom: '4px' }}>
+                        {movie.desc}
+                      </div>
+                      <div className="genre" style={{ fontSize: '12px', color: '#b3b3b3' }}>
+                        {movie.genre}
                       </div>
                     </div>
                   )}

@@ -119,10 +119,14 @@
   transition: all 0.3s ease;
   z-index: 2;
   
-  // Hover effect
+  // Hover effect - same as normal list items
   &:hover {
     transform: scale(1.05);
     z-index: 10;
+    
+    img {
+      transform: scale(1.05);
+    }
   }
   
   .movie-poster {
